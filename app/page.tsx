@@ -22,6 +22,10 @@ import {
   ThumbsUp,
   LucideIcon 
 } from "lucide-react"
+import { supabase } from '@/lib/supabase'
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 
 interface Feature {
   icon: LucideIcon
@@ -30,12 +34,16 @@ interface Feature {
 }
 
 interface Property {
-  id: string
-  type: string
-  name: string
-  price: string
+  id?: number
+  title: string
+  description: string
+  price: number
+  location: string
+  image_url?: string
+  isPopular?: boolean 
+  type?: string
+  name?: string
   features: string
-  isPopular: boolean
 }
 
 const features: Feature[] = [
@@ -60,6 +68,14 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [properties, setProperties] = useState<Property[]>([]);
   const slideContainerRef = useRef<HTMLDivElement>(null);
+  const [newProperty, setNewProperty] = useState<Property>({
+    title: "",
+    description: "",
+    price: 0,
+    location: "",
+    image_url: "",
+    features: ""
+  });
 
   const totalSlides = Math.ceil(properties.length / 3);
 
@@ -68,9 +84,10 @@ export default function Home() {
   }, [])
 
   const fetchProperties = async () => {
-    const response = await fetch("/api/properties")
-    const data = await response.json()
-    setProperties(data)
+    const response = await fetch('/api/properties');
+    const data = await response.json();
+    console.log(data); // Log the data to check its structure
+    setProperties(data);
   }
 
   const scrollToSlide = useCallback((index: number) => {
@@ -99,6 +116,35 @@ export default function Home() {
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [nextSlide]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const response = await fetch('/api/properties', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newProperty),
+    })
+    if (response.ok) {
+      fetchProperties()
+      setNewProperty({
+        title: "",
+        description: "",
+        price: 0,
+        location: "",
+        image_url: "",
+        features: ""
+      })
+    }
+  }
+
+  const handleDelete = async (id: number) => {
+    await fetch(`/api/properties?id=${id}`, {
+      method: 'DELETE',
+    })
+    fetchProperties()
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
@@ -176,20 +222,38 @@ export default function Home() {
                       )}
                       <CardHeader>
                         <div className="text-sm text-slate-500 mb-2">{property.type}</div>
-                        <CardTitle className="text-xl">{property.name}</CardTitle>
+                        <CardTitle className="text-xl">{property.title}</CardTitle>
                         <CardDescription>
-                          <span className="text-2xl font-bold text-slate-800">{property.price}</span>
-                          <span className="text-slate-600">만원</span>
+                          <span className="text-2xl font-bold text-slate-800">
+                            {Math.floor(property.price / 100000000)} 억
+                          </span>
+                          <span className="text-slate-600">원</span>
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
                         <ul className="space-y-3">
-                          {JSON.parse(property.features).map((feature: string, i: number) => (
-                            <li key={i} className="flex items-center text-slate-600">
-                              <CheckCircle2 className="h-5 w-5 text-pink-600 mr-2" />
-                              {feature}
-                            </li>
-                          ))}
+                          {property.features ? (
+                            (() => {
+                              try {
+                                const parsedFeatures = JSON.parse(property.features);
+                                if (Array.isArray(parsedFeatures)) {
+                                  return parsedFeatures.map((feature: string, i: number) => (
+                                    <li key={i} className="flex items-center text-slate-600">
+                                      <CheckCircle2 className="h-5 w-5 text-pink-600 mr-2" />
+                                      {feature}
+                                    </li>
+                                  ));
+                                } else {
+                                  return <li className="text-slate-600">특성이 잘못된 형식입니다.</li>; // Fallback for non-array
+                                }
+                              } catch (error) {
+                                console.error("Error parsing features:", error);
+                                return <li className="text-slate-600">특성이 잘못되었습니다.</li>; // Fallback for parsing error
+                              }
+                            })()
+                          ) : (
+                            <li className="text-slate-600">특성이 없습니다.</li> // Fallback for undefined features
+                          )}
                         </ul>
                       </CardContent>
                     </Card>
@@ -313,6 +377,7 @@ export default function Home() {
           </a>
         </div>
       </footer>
+
     </div>
   )
 }
