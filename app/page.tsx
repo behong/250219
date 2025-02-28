@@ -23,7 +23,6 @@ import {
   LucideIcon 
 } from "lucide-react"
 import './styles.css'; // Ensure this path is correct 
-import Head from 'next/head';
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
@@ -119,10 +118,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>추천 매물 - 자이 에이스 부동산</title>
-        <meta name="description" content="최고의 매물을 추천합니다." />
-      </Head>
       <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
         {/* Hero Section */}
         <section className="relative py-24 px-4 overflow-hidden">
