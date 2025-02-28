@@ -23,13 +23,6 @@ import {
   LucideIcon 
 } from "lucide-react"
 import './styles.css'; // Ensure this path is correct 
-import type { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'MyTitle',
-  description: 'myDescription',
-  keywords: 'keyword1, keyword2'
-};
 
 
 interface Feature {
