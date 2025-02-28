@@ -167,7 +167,7 @@ export default function Home() {
             <h2 className="text-4xl font-bold text-center mb-12">
               <span className="bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
                 추천 매물
-              </span>
+              </span>11
                 {/* 추천 매물 리스트로 이동하는 버튼 추가 */}
                 <Link href="/articles" passHref>
                   <button className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
