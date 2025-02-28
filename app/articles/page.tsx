@@ -56,7 +56,7 @@ export default function Articles() {
         return <div>로딩 중...</div>; // Loading state
     }
 
-    // 페이징 계산
+    // 페이징 계산 커밋
     const totalPages = Math.ceil(articles.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentArticles = articles.slice(startIndex, startIndex + itemsPerPage);
