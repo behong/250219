@@ -62,7 +62,7 @@ export default function Articles() {
     const currentArticles = articles.slice(startIndex, startIndex + itemsPerPage);
 
     return (
-        <Layout title="부동산 매물 목록">
+        <Layout>
             <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white p-6">
                 <h1 className="text-2xl font-bold mb-4">부동산 매물 목록</h1>
                 <ul className="space-y-4">
