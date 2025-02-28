@@ -23,6 +23,7 @@ import {
   LucideIcon 
 } from "lucide-react"
 import './styles.css'; // Ensure this path is correct 
+import Link from 'next/link'; // Import Link from Next.js
 
 
 interface Feature {
@@ -167,6 +168,12 @@ export default function Home() {
               <span className="bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
                 추천 매물
               </span>
+                {/* 추천 매물 리스트로 이동하는 버튼 추가 */}
+                <Link href="/articles" passHref>
+                  <button className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    리스트 보기
+                  </button>
+                </Link>
             </h2>
             <div className={`relative ${!loading ? 'fade-in visible' : ''}`}>
               <div 
