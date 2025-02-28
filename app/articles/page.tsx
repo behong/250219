@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase'; // Adjust the path as necessary
 import Layout from '../layout'; // Adjust the path as necessary
-import Link from 'next/link'; // Import Link from Next.js
 
 interface RealEstateArticle {
     articleno: number;
