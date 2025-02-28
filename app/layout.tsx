@@ -15,7 +15,8 @@ interface LayoutProps {
   title?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, title }) => {
+ 
+export default function Layout({ children, title }: LayoutProps) {
     return (
         <>
         <html>
@@ -26,6 +27,4 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
             </html>
         </>
     );
-};
-
-export default Layout;
+}
