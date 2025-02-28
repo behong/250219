@@ -12,16 +12,15 @@ import { ReactNode } from 'react';
 
 interface LayoutProps {
   children: ReactNode;
-  title?: string;
 }
 
  
-export default function Layout({ children, title }: LayoutProps) {
+export default function Layout({ children }: LayoutProps) {
     return (
         <>
         <html>
             <Head>
-                <title>{title || '기본 제목 - 자이 에이스 부동산'}</title> {/* title prop 사용 */}
+                <title>{'자이 에이스 부동산'}</title> {/* title prop 사용 */}
             </Head>
             <body>{children}</body>
             </html>
