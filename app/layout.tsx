@@ -1,6 +1,5 @@
 "use client"; // 클라이언트 컴포넌트로 마크
 
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Head from 'next/head';
 import { ReactNode } from 'react';
