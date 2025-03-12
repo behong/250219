@@ -14,16 +14,17 @@ interface LayoutProps {
   children: ReactNode;
 }
 
- 
-export default function Layout({ children }: LayoutProps) {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
-        <>
-        <html>
-            <Head>
-                <title>{'자이 에이스 부동산'}</title> {/* title prop 사용 */}
-            </Head>
-            <body>{children}</body>
-            </html>
-        </>
+        <html lang="en">
+            <head>
+                <title>내 앱</title>
+            </head>
+            <body>
+                {children}
+            </body>
+        </html>
     );
-}
+};
+
+export default Layout;

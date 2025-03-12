@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 import './styles.css'; // Ensure this path is correct 
 import Link from 'next/link'; // Import Link from Next.js
+import Layout from './layout'; // Import Layout component
 
 
 interface Feature {

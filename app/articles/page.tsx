@@ -92,12 +92,13 @@ export default function Articles() {
                                     className="mr-2"
                                 />
                                 <span className="text-sm text-gray-600">추천 매물 등록</span>
-                                <h2 className="text-xl font-semibold text-blue-600 ml-2">{article.articlename.toLowerCase()}</h2>
+                                <h2 className="text-xl font-semibold text-blue-600 ml-2 w-1/2 truncate"> {/* 너비를 절반으로 제한 */}
+                                    {article.articlename.toLowerCase()} {article.buildingname}
+                                </h2>
                             </div>
                             <p className="text-gray-600">상태: {article.articlestatus}</p>
-                            <p className="text-gray-600">유형: {article.realestatetypename}</p>
+                            <p className="text-gray-600">유형: {article.tradetypename}</p>
                             <p className="text-gray-600">가격: {article.dealorwarrantprc}</p>
-                            <p className="text-gray-600">위치: {article.areaname}</p>
                             <p className="text-gray-600">면적: {article.area1}㎡</p>
                             <p className="text-gray-600">방향: {article.direction}</p>
                             <p className="text-gray-600">공인중개사: {article.realtorname}</p>
