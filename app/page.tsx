@@ -57,7 +57,6 @@ export default function Home() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const slideContainerRef = useRef<HTMLDivElement>(null);
-
   const totalSlides = Math.ceil(properties.length / 3);
 
   useEffect(() => {
@@ -127,16 +126,16 @@ export default function Home() {
               다년간 경력의 부동산 전문가들이 최적의 매물을 추천해드립니다
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
-              <a href="https://new.land.naver.com/complexes/112792?ms=37.345878,127.090312,17&a=APT:ABYG:JGC:PRE&e=RETAIL&ad=true&articleNo=2508979071&realtorId=coding9741" target="_blank" rel="noopener noreferrer">
+              <a href="tel:031-276-7771">
+                <Button size="lg" className="bg-pink-600 hover:bg-pink-700 text-white">
+                  지금 바로 상담받기 <Phone className="ml-2 h-4 w-4" />
+                </Button>
+              </a>
+              <Link href="/articles">
                 <Button size="lg" className="bg-black hover:bg-pink-950">
                   매물 보기 <Search className="ml-2 h-4 w-4" />
                 </Button>
-              </a>
-              <a href="tel:031-276-7771">
-                <Button size="lg" variant="outline" className="border-black text-black hover:bg-pink-50">
-                  상담 문의 <Phone className="ml-2 h-4 w-4" />
-                </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -170,12 +169,6 @@ export default function Home() {
               <span className="bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
                 추천 매물
               </span>
-                {/* 추천 매물 리스트로 이동하는 버튼 추가 */}
-                <Link href="/articles" passHref>
-                  <button className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                    리스트 보기
-                  </button>
-                </Link>
             </h2>
             <div className={`relative ${!loading ? 'fade-in visible' : ''}`}>
               <div 
@@ -331,9 +324,9 @@ export default function Home() {
         <footer className="py-8 px-4 bg-black text-white">
           <div className="max-w-6xl mx-auto flex justify-between items-center">
             <p>© 2024 자이 에이스 부동산. All rights reserved.</p>
-            {/* <a href="/admin" className="text-pink-400 hover:text-pink-300">
+            <Link href="/admin" className="text-pink-400 hover:text-pink-300 transition-colors">
               관리자 페이지
-            </a> */}
+            </Link>
           </div>
         </footer>
 

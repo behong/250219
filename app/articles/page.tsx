@@ -15,35 +15,6 @@ export default function Articles() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(12);
 
-    const togglePopular = async (articleno: number) => {
-        const article = articles.find(a => a.articleno === articleno);
-        if (!article) return;
-
-        const newIsPopular = !article.isPopular;
-
-        try {
-            const { error } = await supabase
-                .from('real_estate_articles')
-                .update({ isPopular: newIsPopular })
-                .eq('articleno', articleno);
-
-            if (error) {
-                console.error('Error updating popular status:', error);
-                return;
-            }
-
-            setArticles(prevArticles =>
-                prevArticles.map(a =>
-                    a.articleno === articleno
-                        ? { ...a, isPopular: newIsPopular }
-                        : a
-                )
-            );
-        } catch (error) {
-            console.error('Error updating popular status:', error);
-        }
-    };
-
     useEffect(() => {
         const fetchArticles = async () => {
             try {
@@ -74,12 +45,7 @@ export default function Articles() {
 
     const totalPages = Math.ceil(articles.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const sortedArticles = [...articles].sort((a, b) => {
-        if (a.isPopular && !b.isPopular) return -1;
-        if (!a.isPopular && b.isPopular) return 1;
-        return 0;
-    });
-    const currentArticles = sortedArticles.slice(startIndex, startIndex + itemsPerPage);
+    const currentArticles = articles.slice(startIndex, startIndex + itemsPerPage);
 
     return (
             <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white p-6">
@@ -93,15 +59,7 @@ export default function Articles() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {currentArticles.map((article) => (
                         <div key={article.articleno} className="border rounded-lg shadow-md p-4 bg-white hover:shadow-lg transition-shadow">
-                            <div className="flex items-center justify-between mb-2">
-                                <h2 className="text-xl font-semibold text-blue-600">{article.articlename}</h2>
-                                <input
-                                    type="checkbox"
-                                    checked={article.isPopular}
-                                    onChange={() => article.articleno && togglePopular(article.articleno)}
-                                    className="h-5 w-5 text-blue-600"
-                                />
-                            </div>
+                            <h2 className="text-xl font-semibold text-blue-600 mb-2">{article.articlename}</h2>
                             <div className="space-y-2">
                                 <p className="text-gray-600">거래 유형: {article.tradetypename}</p>
                                 <p className="text-gray-600">주택 유형: {article.realestatetypename}</p>
