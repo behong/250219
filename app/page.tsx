@@ -173,12 +173,26 @@ export default function Home() {
             <div className={`relative ${!loading ? 'fade-in visible' : ''}`}>
               <div 
                 ref={slideContainerRef}
-                className="overflow-x-hidden snap-x snap-mandatory scrollbar-hide"
+                className="overflow-x-hidden snap-x snap-mandatory scrollbar-hide slide-container"
               >
                 <div className="flex gap-6 transition-transform duration-500">
-                  {properties.map((property) => (
-                    <div key={property.articleno} className="snap-start shrink-0 w-full md:w-[calc(33.333%-16px)] pt-4">
-                      <Card className={`relative border-2 h-full ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 transition-colors`}>
+                  {properties.map((property, index) => {
+                    // 현재 슬라이드 인덱스를 기준으로 각 카드의 상태 결정
+                    const itemIndex = Math.floor(index / 3);
+                    let slideStatus = '';
+                    if (itemIndex === currentSlide) {
+                      slideStatus = 'active';
+                    } else if (itemIndex === (currentSlide - 1 + totalSlides) % totalSlides) {
+                      slideStatus = 'prev';
+                    } else if (itemIndex === (currentSlide + 1) % totalSlides) {
+                      slideStatus = 'next';
+                    } else {
+                      slideStatus = 'far';
+                    }
+                    
+                    return (
+                    <div key={property.articleno} className={`snap-start shrink-0 w-full md:w-[calc(33.333%-16px)] pt-4 slide-item ${slideStatus}`}>
+                      <Card className={`relative border-2 h-full property-card ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 transition-colors`}>
                         {property.isPopular && (
                           <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-sm z-10 whitespace-nowrap shadow-sm">
                             인기 매물
@@ -210,7 +224,7 @@ export default function Home() {
                         </CardContent>
                       </Card>
                     </div>
-                  ))}
+                  )})}
                 </div>
               </div>
               

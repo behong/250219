@@ -1,9 +1,73 @@
-   /* styles.css */
-   .fade-in {
+/* styles.css */
+.fade-in {
     opacity: 0;
     transition: opacity 0.5s ease-in;
 }
 
 .fade-in.visible {
     opacity: 1;
+}
+
+/* 슬라이드 애니메이션 효과 */
+.slide-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.slide-item {
+    transition: all 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    will-change: transform, opacity;
+}
+
+.slide-item.active {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    z-index: 2;
+}
+
+.slide-item.prev {
+    transform: scale(0.9) translateX(-5%) rotate(-1deg);
+    opacity: 0.7;
+    z-index: 1;
+}
+
+.slide-item.next {
+    transform: scale(0.9) translateX(5%) rotate(1deg);
+    opacity: 0.7;
+    z-index: 1;
+}
+
+.slide-item.far {
+    transform: scale(0.8) translateX(10%) rotate(2deg);
+    opacity: 0.4;
+    z-index: 0;
+}
+
+/* 슬라이드 버튼 애니메이션 */
+.slide-btn {
+    transition: all 0.3s ease;
+}
+
+.slide-btn:hover {
+    transform: scale(1.2);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* 카드 호버 효과 */
+.property-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.property-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+/* 인디케이터 애니메이션 */
+.slide-indicator {
+    transition: all 0.3s ease;
+}
+
+.slide-indicator.active {
+    transform: scale(1.5);
 }
