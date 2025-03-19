@@ -205,7 +205,7 @@ export default function Home() {
                               <div className="text-sm text-slate-500">{property.realestatetypename}</div>
                             </div>
                             <div className="text-right">
-                              <span className="text-2xl font-bold text-slate-800">{property.dealorwarrantprc} 억</span>
+                              <span className="text-2xl font-bold text-slate-800">{property.dealorwarrantprc}</span>
                               <div className="text-sm text-slate-500">{property.tradetypename}</div>
                             </div>
                           </div>
