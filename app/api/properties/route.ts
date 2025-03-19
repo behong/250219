@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
-import { Property } from '@/types/property'
 
 // GET 메서드
 export async function GET() {

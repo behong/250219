@@ -14,7 +14,6 @@ import {
 import { 
   ChevronLeft,
   ChevronRight,
-  CheckCircle2, 
   Building2, 
   Clock, 
   MapPin,
