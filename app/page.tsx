@@ -73,11 +73,25 @@ export default function Home() {
 
   useEffect(() => {
     const fetchProperties = async () => {
-      const response = await fetch('/api/properties');
-      const data = await response.json();
-      console.log(data); // Log the data to check its structure
-      setProperties(data);
-      setLoading(false);
+      try {
+        const response = await fetch('/api/properties');
+        const data = await response.json();
+        console.log(data); // Log the data to check its structure
+        if (Array.isArray(data)) {
+          setProperties(data);
+        } else if (data.error) {
+          console.error('API Error:', data.error);
+          setProperties([]);
+        } else {
+          console.error('Invalid data format received');
+          setProperties([]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch properties:', error);
+        setProperties([]);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchProperties();

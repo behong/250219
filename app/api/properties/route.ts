@@ -3,24 +3,50 @@ import { NextResponse } from 'next/server'
 
 // 데이터 타입 정의
 interface Property {
-  id?: number
-  title: string
-  description: string
-  price: number
-  location: string
-  image_url?: string
+  articleno?: number
+  articlename: string // 아파트 이름
+  realestatetypename: string // 주택 유형 (아파트, 오피스텔, 단독주택 등)
+  tradetypename: string // 거래 유형(매매, 전세 등)
+  floorinfo: string // 층 정보
+  dealorwarrantprc: string // 거래 가격
+  direction: string // 방향(동, 서, 남, 북 등)
+  articleconfirmymd: string // 거래 완료 날짜
+  articlefeaturedesc:string // 아파트 특징 설명
+  buildingname:string // 아파트 이름(동)
+  realtorname:string // 매물 담당자 이름
+  cppcarticleurl:string // 아파트 사진 URL
+  created_at: string // 생성 날짜
+  isPopular?: boolean   // 인기 아파트 여부
 }
 
 // GET 메서드
 export async function GET() {
   try {
     const { data, error } = await supabase
-      .from('properties')
+      .from('real_estate_articles')
       .select('*')
+      .eq('isPopular', true)
     
     if (error) throw error
 
-    return NextResponse.json(data)
+    // 데이터 구조 변환
+    const transformedData = data.map((article: any) => ({
+      id: article.articleno,
+      title: article.articlename,
+      description: article.articlefeaturedsc || '',
+      price: parseInt(article.dealorwarrantprc.replace(/[^0-9]/g, '')) || 0,
+      location: article.areaname,
+      type: article.realestatetypename,
+      name: article.buildingname,
+      features: JSON.stringify([
+        `${article.area1}㎡`,
+        article.direction,
+        article.floorinfo
+      ]),
+      isPopular: true
+    }))
+
+    return NextResponse.json(transformedData)
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch properties' },
@@ -92,4 +118,4 @@ export async function DELETE(request: Request) {
       { status: 500 }
     )
   }
-} 
+}
