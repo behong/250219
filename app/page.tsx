@@ -141,11 +141,11 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 px-4">
+        <section className="py-1 px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl font-bold text-center mb-12">
               <span className="bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
-                자이 에이스 부동산만의 특별함
+                자이에이스 부동산만의 특별함
               </span>
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -203,21 +203,22 @@ export default function Home() {
                             <div>
                               <CardTitle className="text-xl mb-2">{property.articlename}</CardTitle>
                               <div className="text-sm text-slate-500">{property.realestatetypename}</div>
+                              <div className="text-sm text-slate-500">
+                                {property.floorinfo}층 
+                              </div>
                             </div>
                             <div className="text-right">
                               <span className="text-2xl font-bold text-slate-800">{property.dealorwarrantprc}</span>
                               <div className="text-sm text-slate-500">{property.tradetypename}</div>
+                              <div className="text-sm text-slate-500">
+                                {property.direction} 
+                              </div>
                             </div>
                           </div>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3 text-slate-600">
                             <div className="flex items-center gap-2">
-                              <Building2 className="h-4 w-4" />
-                              <span>{property.floorinfo}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <MapPin className="h-4 w-4" />
                               <span>{property.articlefeaturedesc}</span>
                             </div>
                           </div>
@@ -231,13 +232,13 @@ export default function Home() {
               {/* Navigation Buttons */}
               <button
                 onClick={prevSlide}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-white p-2 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:block"
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-white p-2 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:block slide-btn"
               >
                 <ChevronLeft className="h-6 w-6 text-black" />
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white p-2 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:block"
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white p-2 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:block slide-btn"
               >
                 <ChevronRight className="h-6 w-6 text-black" />
               </button>
@@ -251,8 +252,8 @@ export default function Home() {
                       setCurrentSlide(i);
                       scrollToSlide(i);
                     }}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      i === currentSlide ? 'bg-black' : 'bg-pink-200'
+                    className={`w-2 h-2 rounded-full transition-colors slide-indicator ${
+                      i === currentSlide ? 'bg-black active' : 'bg-pink-200'
                     }`}
                   />
                 ))}
@@ -262,7 +263,7 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section className="py-20 px-4 bg-pink-50">
+        <section className="py-1 px-4 bg-pink-50">
           <div className="max-w-6xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-8">
               <span className="bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
