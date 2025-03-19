@@ -1,101 +1,87 @@
 "use client"; // Mark this file as a client component
 
 import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase'; // Adjust the path as necessary
-import Layout from '../layout'; // Adjust the path as necessary
+import { supabase } from '../../lib/supabase';
 import Link from 'next/link';
 import { Home } from 'lucide-react';
 
-interface RealEstateArticle {
-    articleno?: number;
-    articlename: string;
-    realestatetypename: string;
-    tradetypename: string;
-    floorinfo: string;
-    dealorwarrantprc: string;
-    direction: string;
-    articleconfirmymd: string;
-    articlefeaturedesc: string;
-    buildingname: string;
-    realtorname: string;
-    cppcarticleurl: string;
-    created_at: string;
-    isPopular?: boolean;
-    isChecked?: boolean;
-}
+import { Property } from '@/types/property';
+
+type RealEstateArticle = Property;
 
 export default function Articles() {
     const [articles, setArticles] = useState<RealEstateArticle[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(12); // 페이지당 항목 수
+    const [itemsPerPage] = useState(12);
+
+    const togglePopular = async (articleno: number) => {
+        const article = articles.find(a => a.articleno === articleno);
+        if (!article) return;
+
+        const newIsPopular = !article.isPopular;
+
+        try {
+            const { error } = await supabase
+                .from('real_estate_articles')
+                .update({ isPopular: newIsPopular })
+                .eq('articleno', articleno);
+
+            if (error) {
+                console.error('Error updating popular status:', error);
+                return;
+            }
+
+            setArticles(prevArticles =>
+                prevArticles.map(a =>
+                    a.articleno === articleno
+                        ? { ...a, isPopular: newIsPopular }
+                        : a
+                )
+            );
+        } catch (error) {
+            console.error('Error updating popular status:', error);
+        }
+    };
 
     useEffect(() => {
         const fetchArticles = async () => {
-            const { data, error } = await supabase
-                .from('real_estate_articles')
-                .select('*');
+            try {
+                const { data, error } = await supabase
+                    .from('real_estate_articles')
+                    .select('*')
+                    .order('created_at', { ascending: false });
 
-            if (error) {
+                if (error) {
+                    throw error;
+                }
+
+                setArticles(data || []);
+            } catch (error) {
                 console.error('Error fetching articles:', error);
-            } else {
-                // 체크박스 상태 초기화
-                const articlesWithCheckedState = data.map((article: RealEstateArticle) => ({
-                    ...article,
-                    isChecked: article.isPopular || false // isPopular 값을 체크박스 상태로 사용
-                }));
-                setArticles(articlesWithCheckedState);
+                setArticles([]);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
 
         fetchArticles();
     }, []);
 
-    const toggleCheck = async (articleno: number) => {
-        try {
-            const article = articles.find(a => a.articleno === articleno);
-            if (!article) return;
-
-            const newCheckedState = !article.isChecked;
-
-            // Update Supabase
-            const { error } = await supabase
-                .from('real_estate_articles')
-                .update({ isPopular: newCheckedState })
-                .eq('articleno', articleno);
-
-            if (error) throw error;
-
-            // Update local state
-            setArticles(prevArticles =>
-                prevArticles.map(article =>
-                    article.articleno === articleno
-                        ? { ...article, isChecked: newCheckedState }
-                        : article
-                )
-            );
-        } catch (error) {
-            console.error('Error updating article:', error);
-        }
-    };
-
     if (loading) {
-        return <div>로딩 중...</div>; // Loading state
+        return <div>로딩 중...</div>;
     }
 
-    // 페이징 계산
     const totalPages = Math.ceil(articles.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
-    // 체크된 매물을 상단으로 정렬
     const sortedArticles = [...articles].sort((a, b) => {
-        if (a.isChecked === b.isChecked) return 0;
-        return a.isChecked ? -1 : 1;
+        if (a.isPopular && !b.isPopular) return -1;
+        if (!a.isPopular && b.isPopular) return 1;
+        return 0;
     });
     const currentArticles = sortedArticles.slice(startIndex, startIndex + itemsPerPage);
 
     return (
-        <Layout>
             <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white p-6">
                 <div className="flex items-center gap-4 mb-4">
                     <Link href="/" className="px-4 py-2 bg-black text-white rounded-lg hover:bg-pink-950 transition-colors flex items-center gap-2">
@@ -111,8 +97,8 @@ export default function Articles() {
                                 <h2 className="text-xl font-semibold text-blue-600">{article.articlename}</h2>
                                 <input
                                     type="checkbox"
-                                    checked={article.isChecked}
-                                    onChange={() => article.articleno && toggleCheck(article.articleno)}
+                                    checked={article.isPopular}
+                                    onChange={() => article.articleno && togglePopular(article.articleno)}
                                     className="h-5 w-5 text-blue-600"
                                 />
                             </div>
@@ -124,6 +110,7 @@ export default function Articles() {
                                 <p className="text-gray-600">방향: {article.direction}</p>
                                 <p className="text-gray-600">공인중개사: {article.realtorname}</p>
                                 <p className="text-gray-600">거래 완료일: {article.articleconfirmymd}</p>
+                                <p className="text-gray-600">등록일: {new Date(article.created_at).toLocaleDateString('ko-KR')}</p>
                                 {article.articlefeaturedesc && (
                                     <p className="text-gray-600">특징: {article.articlefeaturedesc}</p>
                                 )}
@@ -140,7 +127,6 @@ export default function Articles() {
                     ))}
                 </div>
 
-                {/* 페이징 버튼 */}
                 <div className="flex justify-between mt-4">
                     <button 
                         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -159,6 +145,5 @@ export default function Articles() {
                     </button>
                 </div>
             </div>
-        </Layout>
     );
 }

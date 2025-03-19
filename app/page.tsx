@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef, useCallback } from "react"
+import { supabase } from '@/lib/supabase'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import {
@@ -32,18 +33,7 @@ interface Feature {
   description: string
 }
 
-interface Property {
-  id?: number
-  title: string
-  description: string
-  price: number
-  location: string
-  image_url?: string
-  isPopular?: boolean 
-  type?: string
-  name?: string
-  features: string
-}
+import { Property } from '@/types/property'
 
 const features: Feature[] = [
   {
@@ -74,21 +64,20 @@ export default function Home() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch('/api/properties');
-        const data = await response.json();
-        console.log(data); // Log the data to check its structure
-        if (Array.isArray(data)) {
-          setProperties(data);
-        } else if (data.error) {
-          console.error('API Error:', data.error);
+        const { data, error } = await supabase
+          .from('real_estate_articles')
+          .select('*')
+          .eq('isPopular', true);
+
+        if (error) {
+          console.error('Error fetching properties:', error);
           setProperties([]);
         } else {
-          console.error('Invalid data format received');
-          setProperties([]);
+          setProperties(data || []);
         }
       } catch (error) {
-        console.error('Failed to fetch properties:', error);
-        setProperties([]);
+          console.error('Failed to fetch properties:', error);
+          setProperties([]);
       } finally {
         setLoading(false);
       }
@@ -196,50 +185,36 @@ export default function Home() {
               >
                 <div className="flex gap-6 transition-transform duration-500">
                   {properties.map((property) => (
-                    <div key={property.id} className="snap-start shrink-0 w-full md:w-[calc(33.333%-16px)] pt-4">
-                      <Card className={`relative border-2 h-full ${
-                        property.isPopular ? 'border-black' : 'border-transparent'
-                      } hover:border-pink-600 transition-colors`}>
+                    <div key={property.articleno} className="snap-start shrink-0 w-full md:w-[calc(33.333%-16px)] pt-4">
+                      <Card className={`relative border-2 h-full ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 transition-colors`}>
                         {property.isPopular && (
                           <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-sm z-10 whitespace-nowrap shadow-sm">
                             인기 매물
                           </div>
                         )}
                         <CardHeader>
-                          <div className="text-sm text-slate-500 mb-2">{property.type}</div>
-                          <CardTitle className="text-xl">{property.title}</CardTitle>
-                          <CardDescription>
-                            <span className="text-2xl font-bold text-slate-800">
-                              {Math.floor(property.price / 100000000)} 억
-                            </span>
-                            <span className="text-slate-600">원</span>
-                          </CardDescription>
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <CardTitle className="text-xl mb-2">{property.articlename}</CardTitle>
+                              <div className="text-sm text-slate-500">{property.realestatetypename}</div>
+                            </div>
+                            <div className="text-right">
+                              <span className="text-2xl font-bold text-slate-800">{property.dealorwarrantprc} 억</span>
+                              <div className="text-sm text-slate-500">{property.tradetypename}</div>
+                            </div>
+                          </div>
                         </CardHeader>
                         <CardContent>
-                          <ul className="space-y-3">
-                            {property.features ? (
-                              (() => {
-                                try {
-                                  const parsedFeatures = JSON.parse(property.features);
-                                  if (Array.isArray(parsedFeatures)) {
-                                    return parsedFeatures.map((feature: string, i: number) => (
-                                      <li key={i} className="flex items-center text-slate-600">
-                                        <CheckCircle2 className="h-5 w-5 text-pink-600 mr-2" />
-                                        {feature}
-                                      </li>
-                                    ));
-                                  } else {
-                                    return <li className="text-slate-600">특성이 잘못된 형식입니다.</li>; // Fallback for non-array
-                                  }
-                                } catch (error) {
-                                  console.error("Error parsing features:", error);
-                                  return <li className="text-slate-600">특성이 잘못되었습니다.</li>; // Fallback for parsing error
-                                }
-                              })()
-                            ) : (
-                              <li className="text-slate-600">특성이 없습니다.</li> // Fallback for undefined features
-                            )}
-                          </ul>
+                          <div className="space-y-3 text-slate-600">
+                            <div className="flex items-center gap-2">
+                              <Building2 className="h-4 w-4" />
+                              <span>{property.floorinfo}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <MapPin className="h-4 w-4" />
+                              <span>{property.articlefeaturedesc}</span>
+                            </div>
+                          </div>
                         </CardContent>
                       </Card>
                     </div>
