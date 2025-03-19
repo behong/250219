@@ -58,6 +58,31 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const slideContainerRef = useRef<HTMLDivElement>(null);
   const totalSlides = Math.ceil(properties.length / 3);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // 터치 스와이프 기능 추가
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setTouchEnd(null);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -174,6 +199,9 @@ export default function Home() {
               <div 
                 ref={slideContainerRef}
                 className="overflow-x-hidden snap-x snap-mandatory scrollbar-hide slide-container"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
               >
                 <div className="flex gap-6 transition-transform duration-500">
                   {properties.map((property, index) => {
@@ -229,7 +257,7 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* Navigation Buttons */}
+              {/* Navigation Buttons - Desktop */}
               <button
                 onClick={prevSlide}
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-white p-2 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:block slide-btn"
@@ -242,9 +270,25 @@ export default function Home() {
               >
                 <ChevronRight className="h-6 w-6 text-black" />
               </button>
+              
+              {/* Navigation Buttons - Mobile */}
+              <div className="flex justify-between w-full absolute top-1/2 -translate-y-1/2 px-2 md:hidden">
+                <button
+                  onClick={prevSlide}
+                  className="bg-white/80 p-2 rounded-full shadow-md hover:bg-pink-50 transition-colors z-10 slide-btn"
+                >
+                  <ChevronLeft className="h-5 w-5 text-black" />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="bg-white/80 p-2 rounded-full shadow-md hover:bg-pink-50 transition-colors z-10 slide-btn"
+                >
+                  <ChevronRight className="h-5 w-5 text-black" />
+                </button>
+              </div>
 
               {/* Slide Indicators */}
-              <div className="flex justify-center gap-2 mt-6">
+              <div className="flex justify-center gap-3 mt-6">
                 {Array.from({ length: totalSlides }).map((_, i) => (
                   <button
                     key={i}
@@ -252,7 +296,7 @@ export default function Home() {
                       setCurrentSlide(i);
                       scrollToSlide(i);
                     }}
-                    className={`w-2 h-2 rounded-full transition-colors slide-indicator ${
+                    className={`w-3 h-3 md:w-2 md:h-2 rounded-full transition-colors slide-indicator ${
                       i === currentSlide ? 'bg-black active' : 'bg-pink-200'
                     }`}
                   />
