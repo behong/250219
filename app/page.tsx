@@ -54,10 +54,11 @@ const features: Feature[] = [
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [properties, setProperties] = useState<Property[]>([]);  
   const [loading, setLoading] = useState(true);
   const slideContainerRef = useRef<HTMLDivElement>(null);
-  const totalSlides = Math.ceil(properties.length / 3);
+  const [itemsPerSlide, setItemsPerSlide] = useState(3); // 슬라이드당 아이템 수 상태 추가
+  const totalSlides = Math.ceil(properties.length / itemsPerSlide);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
@@ -83,6 +84,28 @@ export default function Home() {
       prevSlide();
     }
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      // 화면 너비에 따라 슬라이드당 아이템 수 조정
+      if (window.innerWidth < 640) { // 모바일
+        setItemsPerSlide(2);
+      } else if (window.innerWidth < 1024) { // 태블릿
+        setItemsPerSlide(2);
+      } else { // 데스크탑
+        setItemsPerSlide(3);
+      }
+    };
+
+    // 초기 로드 시 실행
+    handleResize();
+
+    // 화면 크기 변경 시 이벤트 리스너 등록
+    window.addEventListener('resize', handleResize);
+    
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -206,7 +229,7 @@ export default function Home() {
                 <div className="flex gap-6 transition-transform duration-500">
                   {properties.map((property, index) => {
                     // 현재 슬라이드 인덱스를 기준으로 각 카드의 상태 결정
-                    const itemIndex = Math.floor(index / 3);
+                    const itemIndex = Math.floor(index / itemsPerSlide);
                     let slideStatus = '';
                     if (itemIndex === currentSlide) {
                       slideStatus = 'active';
@@ -219,7 +242,7 @@ export default function Home() {
                     }
                     
                     return (
-                    <div key={property.articleno} className={`snap-start shrink-0 w-full md:w-[calc(33.333%-16px)] pt-4 slide-item ${slideStatus}`}>
+                    <div key={property.articleno} className={`snap-start shrink-0 w-1/2 sm:w-1/2 md:w-[calc(33.333%-16px)] pt-4 slide-item ${slideStatus}`}>
                       <Card className={`relative border-2 h-full property-card ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 transition-colors`}>
                         {property.isPopular && (
                           <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-sm z-10 whitespace-nowrap shadow-sm">
