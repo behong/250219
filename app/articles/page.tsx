@@ -72,14 +72,6 @@ export default function Articles() {
                                 {article.articlefeaturedesc && (
                                     <p className="text-gray-600">특징: {article.articlefeaturedesc}</p>
                                 )}
-                                <a
-                                    href={article.cppcarticleurl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-block mt-2 text-blue-500 hover:underline"
-                                >
-                                    자세히 보기
-                                </a>
                             </div>
                         </div>
                     ))}

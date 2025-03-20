@@ -243,38 +243,44 @@ export default function Home() {
                     
                     return (
                     <div key={property.articleno} className={`snap-start shrink-0 w-1/2 sm:w-1/2 md:w-[calc(33.333%-16px)] pt-4 slide-item ${slideStatus}`}>
-                      <Card className={`relative border-2 h-full property-card ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 transition-colors`}>
-                        {property.isPopular && (
-                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-sm z-10 whitespace-nowrap shadow-sm">
-                            인기 매물
-                          </div>
-                        )}
-                        <CardHeader>
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <CardTitle className="text-xl mb-2">{property.articlename}</CardTitle>
-                              <div className="text-sm text-slate-500">{property.realestatetypename}</div>
-                              <div className="text-sm text-slate-500">
-                                {property.floorinfo}층 
+                      <a href={`tel:031-276-7771`} className="block h-full cursor-pointer">
+                        <Card className={`relative border-2 h-full property-card ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 hover:scale-105 transition-all cursor-pointer`}>
+                          {property.isPopular && (
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-sm z-10 whitespace-nowrap shadow-sm">
+                              인기 매물
+                            </div>
+                          )}
+                          <CardHeader>
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <CardTitle className="text-xl mb-2">{property.articlename}</CardTitle>
+                                <div className="text-sm text-slate-500">{property.realestatetypename}</div>
+                                <div className="text-sm text-slate-500">
+                                  {property.floorinfo}층 
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-2xl font-bold text-slate-800">{property.dealorwarrantprc}</span>
+                                <div className="text-sm text-slate-500">{property.tradetypename}</div>
+                                <div className="text-sm text-slate-500">
+                                  {property.direction} 
+                                </div>
                               </div>
                             </div>
-                            <div className="text-right">
-                              <span className="text-2xl font-bold text-slate-800">{property.dealorwarrantprc}</span>
-                              <div className="text-sm text-slate-500">{property.tradetypename}</div>
-                              <div className="text-sm text-slate-500">
-                                {property.direction} 
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-3 text-slate-600">
+                              <div className="flex items-center gap-2">
+                                <span>{property.articlefeaturedesc}</span>
+                              </div>
+                              <div className="flex items-center justify-center mt-4 bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded-lg transition-colors">
+                                <Phone className="h-4 w-4 mr-2" />
+                                <span>전화 상담하기</span>
                               </div>
                             </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-3 text-slate-600">
-                            <div className="flex items-center gap-2">
-                              <span>{property.articlefeaturedesc}</span>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+                          </CardContent>
+                        </Card>
+                      </a>
                     </div>
                   )})}
                 </div>
