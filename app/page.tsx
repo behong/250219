@@ -244,13 +244,13 @@ export default function Home() {
                     return (
                     <div key={property.articleno} className={`snap-start shrink-0 w-1/2 sm:w-1/2 md:w-[calc(33.333%-16px)] pt-4 slide-item ${slideStatus}`}>
                       <a href={`tel:031-276-7771`} className="block h-full cursor-pointer">
-                        <Card className={`relative border-2 h-full property-card ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 hover:scale-105 transition-all cursor-pointer`}>
+                        <Card className={`relative border-2 h-full property-card flex flex-col ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 hover:scale-105 transition-all cursor-pointer`}>
                           {property.isPopular && (
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-sm z-10 whitespace-nowrap shadow-sm">
                               인기 매물
                             </div>
                           )}
-                          <CardHeader>
+                          <CardHeader className="flex-shrink-0">
                             <div className="flex justify-between items-start">
                               <div>
                                 <CardTitle className="text-xl mb-2">{property.articlename}</CardTitle>
@@ -268,15 +268,13 @@ export default function Home() {
                               </div>
                             </div>
                           </CardHeader>
-                          <CardContent>
-                            <div className="space-y-3 text-slate-600">
-                              <div className="flex items-center gap-2">
-                                <span>{property.articlefeaturedesc}</span>
-                              </div>
-                              <div className="flex items-center justify-center mt-4 bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded-lg transition-colors">
-                                <Phone className="h-4 w-4 mr-2" />
-                                <span>전화 상담하기</span>
-                              </div>
+                          <CardContent className="flex-grow flex flex-col justify-between">
+                            <div className="text-slate-600 mb-4">
+                              <p className="line-clamp-2 min-h-[40px]">{property.articlefeaturedesc || '상세 정보는 전화 문의 바랍니다'}</p>
+                            </div>
+                            <div className="flex items-center justify-center bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded-lg transition-colors">
+                              <Phone className="h-4 w-4 mr-2" />
+                              <span>전화 상담하기</span>
                             </div>
                           </CardContent>
                         </Card>
