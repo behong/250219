@@ -46,6 +46,13 @@
 /* 슬라이드 버튼 애니메이션 */
 .slide-btn {
     transition: all 0.3s ease;
+    opacity: 0.9;
+}
+
+.slide-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .slide-btn:hover {

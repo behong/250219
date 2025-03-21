@@ -287,28 +287,28 @@ export default function Home() {
               {/* Navigation Buttons - Desktop */}
               <button
                 onClick={prevSlide}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-white p-2 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:block slide-btn"
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white p-3 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:flex items-center justify-center z-10"
               >
                 <ChevronLeft className="h-6 w-6 text-black" />
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white p-2 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:block slide-btn"
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white p-3 rounded-full shadow-lg hover:bg-pink-50 transition-colors hidden md:flex items-center justify-center z-10"
               >
                 <ChevronRight className="h-6 w-6 text-black" />
               </button>
               
               {/* Navigation Buttons - Mobile */}
-              <div className="flex justify-between w-full absolute top-1/2 -translate-y-1/2 px-2 md:hidden">
+              <div className="flex justify-between w-full absolute top-1/2 -translate-y-1/2 px-2 md:hidden z-10">
                 <button
                   onClick={prevSlide}
-                  className="bg-white/80 p-2 rounded-full shadow-md hover:bg-pink-50 transition-colors z-10 slide-btn"
+                  className="bg-white p-3 rounded-full shadow-lg hover:bg-pink-50 transition-colors z-10 slide-btn flex items-center justify-center"
                 >
                   <ChevronLeft className="h-5 w-5 text-black" />
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="bg-white/80 p-2 rounded-full shadow-md hover:bg-pink-50 transition-colors z-10 slide-btn"
+                  className="bg-white p-3 rounded-full shadow-lg hover:bg-pink-50 transition-colors z-10 slide-btn flex items-center justify-center"
                 >
                   <ChevronRight className="h-5 w-5 text-black" />
                 </button>
