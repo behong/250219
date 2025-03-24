@@ -28,8 +28,17 @@ export default function Articles() {
                 if (error) {
                     throw error;
                 }
-
-                setArticles(data || []);
+                
+                // 현재 날짜로부터 3일 이내의 매물만 필터링
+                const threeDaysAgo = new Date();
+                threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+                
+                const filteredData = data?.filter(article => {
+                    const articleDate = new Date(article.created_at);
+                    return articleDate >= threeDaysAgo;
+                }) || [];
+                
+                setArticles(filteredData);
             } catch (error) {
                 console.error('Error fetching articles:', error);
                 setArticles([]);
