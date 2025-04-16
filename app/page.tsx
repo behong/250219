@@ -1,9 +1,7 @@
 "use client"
 
-import React, { useState, useEffect, useRef, useCallback } from "react"
-import { supabase } from '@/lib/supabase'
 import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -11,19 +9,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { 
+import { supabase } from '@/lib/supabase'
+import {
+  Building2,
   ChevronLeft,
   ChevronRight,
-  Building2, 
-  Clock, 
+  Clock,
+  LucideIcon,
   MapPin,
   Phone,
   Search,
-  ThumbsUp,
-  LucideIcon 
+  ThumbsUp
 } from "lucide-react"
-import './styles.css'; // Ensure this path is correct 
 import Link from 'next/link'; // Import Link from Next.js
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import './styles.css'; // Ensure this path is correct 
 
 
 interface Feature {
@@ -334,53 +334,70 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section className="py-1 px-4 bg-pink-50">
+        <section className="py-16 px-4 bg-gradient-to-b from-pink-50 to-white">
           <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-8">
+            <h2 className="text-4xl font-bold mb-4">
               <span className="bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
-                지금 바로 상담받으세요
+                찾아오시는 길
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              매물 상담부터 계약까지 원스톱으로 도와드립니다
+            <p className="text-xl text-muted-foreground mb-12">
+              편리한 방법으로 연락주시면 친절하게 상담해드리겠습니다
             </p>
-            <div className="flex gap-6 justify-center items-center flex-wrap">
-              <Card className="border-2 border-pink-100 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-pink-50 p-2 rounded-full">
-                        <Phone className="h-5 w-5 text-black" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm text-slate-500">대표번호</span>
-                        <span className="text-lg font-semibold">031-276-7771</span>
-                      </div>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Contact Info Card */}
+              <Card className="border-2 border-pink-100 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/50 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold text-pink-600">연락처 안내</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center gap-4 p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors">
+                    <div className="bg-white p-3 rounded-full shadow-md">
+                      <Phone className="h-6 w-6 text-pink-600" />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="bg-pink-50 p-2 rounded-full">
-                        <Phone className="h-5 w-5 text-black" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm text-slate-500">휴대전화</span>
-                        <span className="text-lg font-semibold">010-9802-7775</span>
-                      </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm text-slate-500">대표번호</span>
+                      <a href="tel:031-276-7771" className="text-xl font-bold hover:text-pink-600 transition-colors">
+                        031-276-7771
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors">
+                    <div className="bg-white p-3 rounded-full shadow-md">
+                      <Phone className="h-6 w-6 text-pink-600" />
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm text-slate-500">휴대전화</span>
+                      <a href="tel:010-9802-7775" className="text-xl font-bold hover:text-pink-600 transition-colors">
+                        010-9802-7775
+                      </a>
                     </div>
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Location Card */}
               <Dialog>
                 <DialogTrigger asChild>
-                  <Card className="border-2 border-pink-100 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                    <CardContent className="pt-6">
-                      <div className="flex items-center gap-3">
-                        <div className="bg-pink-50 p-2 rounded-full">
-                          <MapPin className="h-5 w-5 text-black" />
+                  <Card className="border-2 border-pink-100 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/50 backdrop-blur cursor-pointer">
+                    <CardHeader>
+                      <CardTitle className="text-2xl font-bold text-pink-600">오시는 길</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center gap-4 p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors">
+                        <div className="bg-white p-3 rounded-full shadow-md">
+                          <MapPin className="h-6 w-6 text-pink-600" />
                         </div>
                         <div className="flex flex-col items-start">
                           <span className="text-sm text-slate-500">주소</span>
-                          <span className="text-lg font-semibold">경기도 용인시 수지구 고기로 89 상가A동 102호</span>
+                          <span className="text-lg font-medium">경기도 용인시 수지구 고기로 89</span>
+                          <span className="text-lg font-medium">상가A동 102호</span>
                         </div>
+                      </div>
+                      <div className="text-sm text-slate-500 text-center mt-4">
+                        클릭하시면 지도가 표시됩니다
                       </div>
                     </CardContent>
                   </Card>
