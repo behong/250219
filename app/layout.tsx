@@ -1,8 +1,11 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Metadata } from 'next';
+import { Inter } from "next/font/google";
 import { ReactNode } from 'react';
 import "./globals.css";
 import { metadata as siteMetadata } from './metadata';
+
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = siteMetadata;
 
@@ -43,8 +46,9 @@ export default function RootLayout({ children }: LayoutProps) {
                     }}
                 />
             </head>
-            <body>{children}
-            <Toaster />
+            <body className={inter.className}>
+                {children}
+                <Toaster />
             </body>
         </html>
     );

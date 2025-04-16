@@ -55,6 +55,7 @@ const features: Feature[] = [
 ]
 
 export default function Home() {
+  const { toast } = useToast();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [properties, setProperties] = useState<Property[]>([]);  
   const [loading, setLoading] = useState(true);
@@ -63,8 +64,7 @@ export default function Home() {
   const totalSlides = Math.ceil(properties.length / itemsPerSlide);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const { toast } = useToast();
-
+  
   // 터치 스와이프 기능 추가
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX);
@@ -161,6 +161,20 @@ export default function Home() {
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [nextSlide]);
+
+  // 주소 복사 버튼 클릭 핸들러
+  const handleCopyAddress = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText('경기도 용인시 수지구 고기로 89 상가A동 102호')
+      .then(() => {
+        toast({
+          description: "주소가 복사되었습니다",
+          variant: "success",
+          duration: 3000,
+        })
+      })
+  };
 
   return (
     <>
@@ -405,18 +419,7 @@ export default function Home() {
                           <span className="text-lg font-medium">상가A동 102호</span>
                         </div>
                         <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            navigator.clipboard.writeText('경기도 용인시 수지구 고기로 89 상가A동 102호')
-                              .then(() => {
-                                toast({
-                                  title: "주소가 복사되었습니다",
-                                  description: "클립보드에 복사되었습니다.",
-                                  duration: 3000,
-                                })
-                              })
-                          }}
+                          onClick={handleCopyAddress}
                           className="bg-white p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <Copy className="h-5 w-5 text-pink-600" />
