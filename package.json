@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.4",
@@ -22,6 +23,7 @@
     "embla-carousel-react": "^8.5.2",
     "lucide-react": "^0.475.0",
     "next": "^15.2.0",
+    "next-sitemap": "^4.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.0.1",
