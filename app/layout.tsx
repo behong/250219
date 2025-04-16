@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 import "./globals.css";
@@ -42,7 +43,9 @@ export default function RootLayout({ children }: LayoutProps) {
                     }}
                 />
             </head>
-            <body>{children}</body>
+            <body>{children}
+            <Toaster />
+            </body>
         </html>
     );
 }
