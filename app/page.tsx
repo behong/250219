@@ -9,12 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useToast } from "@/components/ui/use-toast"
 import { supabase } from '@/lib/supabase'
 import {
   Building2,
   ChevronLeft,
   ChevronRight,
   Clock,
+  Copy,
   LucideIcon,
   MapPin,
   Phone,
@@ -61,6 +63,7 @@ export default function Home() {
   const totalSlides = Math.ceil(properties.length / itemsPerSlide);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const { toast } = useToast();
 
   // 터치 스와이프 기능 추가
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -392,15 +395,32 @@ export default function Home() {
                       <CardTitle className="text-2xl font-bold text-pink-600">오시는 길</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="flex items-center gap-4 p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors">
+                      <div className="flex items-center gap-4 p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors group">
                         <div className="bg-white p-3 rounded-full shadow-md">
                           <MapPin className="h-6 w-6 text-pink-600" />
                         </div>
-                        <div className="flex flex-col items-start">
+                        <div className="flex flex-col items-start flex-1">
                           <span className="text-sm text-slate-500">주소</span>
                           <span className="text-lg font-medium">경기도 용인시 수지구 고기로 89</span>
                           <span className="text-lg font-medium">상가A동 102호</span>
                         </div>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navigator.clipboard.writeText('경기도 용인시 수지구 고기로 89 상가A동 102호')
+                              .then(() => {
+                                toast({
+                                  title: "주소가 복사되었습니다",
+                                  description: "클립보드에 복사되었습니다.",
+                                  duration: 3000,
+                                })
+                              })
+                          }}
+                          className="bg-white p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Copy className="h-5 w-5 text-pink-600" />
+                        </button>
                       </div>
                       <div className="text-sm text-slate-500 text-center mt-4">
                         클릭하시면 지도가 표시됩니다
