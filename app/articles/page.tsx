@@ -247,9 +247,8 @@ export default function Articles() {
                         })()} 
                     </div>
                 ) : (
-                    // 기존 그리드 뷰
                     <>
-                        // 기존 그리드 뷰
+                        {/* 기존 그리드 뷰 */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             {currentArticles.map((article) => (
                                 <div key={article.articleno} className={`border rounded-lg shadow-md p-4 bg-white hover:shadow-lg transition-shadow ${article.tradetypename.includes('전세') ? 'border-l-4 border-l-blue-400' : article.tradetypename.includes('매매') ? 'border-l-4 border-l-green-400' : ''}`}>
