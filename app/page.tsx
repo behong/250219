@@ -163,10 +163,10 @@ export default function Home() {
     <>
       <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
         {/* Hero Section */}
-        <section className="relative py-24 px-4 overflow-hidden">
+        <section className="relative py-24 px-4 overflow-hidden" aria-label="메인 소개">
           <div className="absolute inset-0 bg-black/5 -z-10" />
           <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
+            <h1 itemProp="name" className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
               자이 에이스 부동산과 함께<br />
               당신의 보금자리를 찾아보세요
             </h1>
@@ -211,7 +211,7 @@ export default function Home() {
         </section>
 
         {/* Properties Section */}
-        <section className="py-20 px-4 bg-gradient-to-b from-white to-pink-50">
+        <section className="py-20 px-4 bg-gradient-to-b from-white to-pink-50" aria-label="추천 매물">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl font-bold text-center mb-12">
               <span className="bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
@@ -242,7 +242,10 @@ export default function Home() {
                     }
                     
                     return (
-                    <div key={property.articleno} className={`snap-start shrink-0 w-1/2 sm:w-1/2 md:w-[calc(33.333%-16px)] pt-4 slide-item ${slideStatus}`}>
+                    <div key={property.articleno} itemScope itemType="https://schema.org/Apartment" className={`snap-start shrink-0 w-1/2 sm:w-1/2 md:w-[calc(33.333%-16px)] pt-4 slide-item ${slideStatus}`}>
+                      <meta itemProp="name" content={property.articlename} />
+                      <meta itemProp="description" content={property.articlefeaturedesc} />
+                      <meta itemProp="price" content={property.dealorwarrantprc} />
                       <a href={`tel:031-276-7771`} className="block h-full cursor-pointer">
                         <Card className={`relative border-2 h-full property-card flex flex-col ${property.isPopular ? 'border-black' : 'border-transparent'} hover:border-pink-600 hover:scale-105 transition-all cursor-pointer`}>
                           {property.isPopular && (
@@ -334,8 +337,11 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section className="py-16 px-4 bg-gradient-to-b from-pink-50 to-white">
-          <div className="max-w-6xl mx-auto text-center">
+        <section className="py-16 px-4 bg-gradient-to-b from-pink-50 to-white" aria-label="연락처 및 위치">
+          <div itemScope itemType="https://schema.org/RealEstateAgent" className="max-w-6xl mx-auto text-center">
+            <meta itemProp="name" content="자이 에이스 부동산" />
+            <meta itemProp="telephone" content="031-276-7771" />
+            <meta itemProp="address" content="경기도 용인시 수지구 고기로 89 상가A동 102호" />
             <h2 className="text-4xl font-bold mb-4">
               <span className="bg-gradient-to-r from-black to-pink-600 bg-clip-text text-transparent">
                 찾아오시는 길
