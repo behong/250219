@@ -1,9 +1,9 @@
 "use client"; // Mark this file as a client component
 
+import { ArrowDownUp, Filter, Home } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import Link from 'next/link';
-import { Home, Filter, ArrowDownUp } from 'lucide-react';
 
 import { Property } from '@/types/property';
 
